@@ -1,4 +1,4 @@
-# <img src="assets/icon.jpg" style="vertical-align: -14px;" :height="50px" width="50px"> Make-it-Real
+# <img src="assets/icon.jpg" style="vertical-align: -14px;" :height="40px" width="40px"> Bootstrap3D
 
 **[Bootstrap3D: Improving 3D Content Creation with Synthetic Data](https://arxiv.org/abs/2404.16829)**
 </br>
