@@ -11,7 +11,6 @@
 [Dahua Lin](http://dahua.site/),
 [Jiaqi Wang](https://myownskyw7.github.io/)
 
-<p style="font-size: 0.6em; margin-top: -1em">*Equal Contribution</p>
 <p align="center">
 <a href="https://arxiv.org/abs/2404.16829"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
 <a href="https://sunzey.github.io/Make-it-Real"><img src="https://img.shields.io/badge/Project-Website-red"></a>
