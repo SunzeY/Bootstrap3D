@@ -28,7 +28,7 @@
 您的浏览器不支持 video 标签。
 </video> -->
 
-<!-- ![Demo](./assets/demo.gif) -->
+![Demo](./assets/cases.gif)
 
 
 ## 📜 News
