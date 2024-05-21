@@ -25,7 +25,6 @@
 
 
 <!-- <video src="https://github.com/Aleafy/Make_it_Real/blob/main/assets/demo.mp4?raw=true" controls="controls">
-您的浏览器不支持 video 标签。
 </video> -->
 
 ![Demo](./assets/cases.gif)
