@@ -35,15 +35,15 @@
 
 ## 💡 Highlights
 - 🔥 A new Multi-View Diffusion model trained on high quality synthetic data and capable of generating multi-view images closely follow text prompt.
-- 🔥 Denser captioned Objaverse Dataset using finetuned 3D aware MV-LLaVA.
-- 🔥 
+- 🔥 Denser captioned Objaverse Dataset using finetuned 3D aware MV-LLaVA powered by GPT-4V.
+- 🔥 A High Quality synthetic dataset for high asethetic 3D content creation. 
 
 ## 👨‍💻 Todo
 - [ ] Training code of MV-Diffusion model based on PixArt.
 - [ ] BS-Synthetic3D HQ 3D-object dataset.
 - [ ] Release of MV-PixArt-alpha, MV-Pixart-sigma model
 - [x] BS-Objaverse Dataset cart launched on huggingface.
-- [x] MV-LLaVA model card and web demo.
+- [x] MV-LLaVA model and web demo.
 - [x] Paper and project page.
 
 ## ⚡ Quick Start
