@@ -12,13 +12,11 @@
 [Jiaqi Wang](https://myownskyw7.github.io/)
 
 <p align="center">
-<a href="https://arxiv.org/abs/2404.16829"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
-<a href="https://sunzey.github.io/Make-it-Real"><img src="https://img.shields.io/badge/Project-Website-red"></a>
-<!-- <a href="https://www.youtube.com/watch?v=_j-t8592GCM"><img src="https://img.shields.io/static/v1?label=Demo&message=Video&color=orange"></a> -->
-<!-- <a href="" target='_blank'>
-<img src="https://visitor-badge.laobi.icu/badge?page_id=Aleafy.Make_it_Real&left_color=gray&right_color=blue">
-</a> -->
+<a href="https://arxiv.org/abs/2312.03818"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
+<a href="https://sunzey.github.io/Bootstrap3D/"><img src="https://img.shields.io/badge/Project-Website-red"></a>
 </p>
+
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/Zery/Alpha_CLIP_ImgVar)
 
 <!-- Hugging-face Demo `Make-it-Real`: (Coming soon) -->
 <!-- [![Hugging Face Spaces(Coming soon)](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/xxx) -->
@@ -55,6 +53,7 @@
 
 ## ✒️ Citation
 If you find our work helpful for your research, please consider giving a star ⭐ and citation 📝
+
 ```bibtex
 @misc{fang2024makeitreal,
       title={Make-it-Real: Unleashing Large Multimodal Model's Ability for Painting 3D Objects with Realistic Materials}, 
