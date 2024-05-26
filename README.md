@@ -29,7 +29,7 @@
 
 
 ## 📜 News
-🚀 [2024/5/26] The [paper](https://arxiv.org/abs/xxx) and [project page](https://sunzey.github.io/Make-it-Real) are released!
+🚀 [2024/5/28] The [paper](https://arxiv.org/abs/xxx) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
 
 ## 💡 Highlights
 - 🔥 A new Multi-View Diffusion model trained on high quality synthetic data and capable of generating multi-view images closely follow text prompt.
@@ -45,8 +45,6 @@
 - [x] Paper and project page.
 
 ## ⚡ Quick Start
-
-
 
 
 
