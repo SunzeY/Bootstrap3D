@@ -1,7 +1,7 @@
 # MV-LLaVA
 
 ## 📜 News
-MV LLaVA is trained on 30K GPT-4V generated instructive conversation pairs, enable LLaVA to process multi-view images rendered from 3D content, chat about it and generate dense descriptive captions or provide quality estimation.
+MV-LLaVA is trained on 30K GPT-4V generated instructive conversation pairs, enable LLaVA to process multi-view images rendered from 3D content, chat about it and generate dense descriptive captions or provide quality estimation.
 
 It's 7B model is available on [huggingface](https://huggingface.co/Zery/MV-LLaVA-7B)
 
