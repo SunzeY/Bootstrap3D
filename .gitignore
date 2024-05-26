@@ -1,8 +1,8 @@
 workspace/*
 workspace
 *.png
-*.jpg
-*.json
+# *.jpg
+# *.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -158,12 +158,10 @@ work_dir
 #demo.py
 develop/
 tmp.py
-data/
 output_cv/
 output_all/
 output_demo/
 output_debug/
-data/
 output/
 
 #cache for docker

@@ -18,3 +18,5 @@ You can clone our repo and `cd MV_LLaVA && pip install -e .` to install `share4v
 - batch inference your multi-view images using batch scripts in `tools/`
 
 ### Installation (Training)
+1. clone our repo and `cd MV_LLaVA && pip install -e .` to install `share4v` package.
+2. 
