@@ -18,5 +18,17 @@ You can clone our repo and `cd MV_LLaVA && pip install -e .` to install `share4v
 - batch inference your multi-view images using batch scripts in `tools/`
 
 ### Installation (Training)
-1. clone our repo and `cd MV_LLaVA && pip install -e .` to install `share4v` package.
-2. 
+
+#### training demo
+clone our repo and `cd MV_LLaVA && pip install -e .` to install `share4v` package.
+first use `scripts/slurm_pretrain_7b_mv.sh` to align CLIP with LLama, than run `scripts/slrum_finetune_7b_mv.sh` to do instruct tuning.
+we have uploaded a demo objaverse multi-view data (10 images only) in `data/obj_demo`, its json for pretraining and instruct tuning are available in `data/demo_obj_pretrain.json` and  `data/demo_obj_instruct.json`. You can generate your own data following the same format. It's worth noticing that pretraining data only support single-turn conversation.
+
+You can overlook the modification [here](https://github.com/SunzeY/Bootstrap3D/commit/0a3d99de63d0d8fa323b0336f40487cbd104b33d) to MV-LLaVA's modification based on Share4V. During your own special usage, you only need to focus on these lines of codes.
+
+If you only need to change training data, you can focus on line of codes with `modify` tag (search this tag in your IDE).
+
+#### full data preparation (Objaverse)
+1. download full [cap3D dataset](https://huggingface.co/datasets/tiange/Cap3D) of objaverse rendered images.
+2. download BS-Objaverse dataset GPT-4V generated annotations [obj_descript_gpt_10k.json](https://huggingface.co/datasets/Zery/BS-Objaverse)
+3. prepare [share4v dataset](https://github.com/InternLM/InternLM-XComposer/tree/main/projects/ShareGPT4V) (optional to mitigate overfitting)

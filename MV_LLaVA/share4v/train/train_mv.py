@@ -680,7 +680,7 @@ class LazySupervisedDataset(Dataset):
         list_data_dict = json.load(open(data_path, "r"))[:500000]
         #### you can load part of these data to mitigate overfitting
 
-        for i in range(2): # repeat data during training.
+        for _ in range(10): # repeat data during training.
             list_data_dict += json.load(open("data/demo_obj_pretrain.json.json", "r")) # modify this to your own data list
         #### load `data/demo_obj_pretrain.json.json` for pretraining, load`data/demo_obj_instruct.json` for instruct tuning.
 
