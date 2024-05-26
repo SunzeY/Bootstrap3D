@@ -25,6 +25,8 @@ from typing import Dict, Optional, Sequence
 
 import torch
 import transformers
+import random
+
 from PIL import Image
 from torch.utils.data import Dataset
 from transformers import AutoConfig
@@ -35,7 +37,8 @@ from share4v.constants import (DEFAULT_IM_END_TOKEN, DEFAULT_IM_START_TOKEN,
 from share4v.mm_utils import tokenizer_image_token
 from share4v.model import *
 from share4v.train.share4v_trainer import Share4VTrainer
-
+import numpy as np
+import matplotlib.pyplot as plt
 local_rank = None
 
 
@@ -672,8 +675,18 @@ class LazySupervisedDataset(Dataset):
                  tokenizer: transformers.PreTrainedTokenizer,
                  data_args: DataArguments):
         super(LazySupervisedDataset, self).__init__()
-        list_data_dict = json.load(open(data_path, "r"))
 
+        #### if you cannot access full share4v data, you can simply exclude them and focus on your data only, 
+        list_data_dict = json.load(open(data_path, "r"))[:500000]
+        #### you can load part of these data to mitigate overfitting
+
+        for i in range(2): # repeat data during training.
+            list_data_dict += json.load(open("data/demo_obj_pretrain.json.json", "r")) # modify this to your own data list
+        #### load `data/demo_obj_pretrain.json.json` for pretraining, load`data/demo_obj_instruct.json` for instruct tuning.
+
+        # modify add byond objaverse
+        import random
+        random.shuffle(list_data_dict)
         rank0_print("Formatting inputs...Skip in lazy mode")
         self.tokenizer = tokenizer
         self.list_data_dict = list_data_dict
@@ -703,6 +716,9 @@ class LazySupervisedDataset(Dataset):
 
     def __getitem__(self, i) -> Dict[str, torch.Tensor]:
         sources = self.list_data_dict[i]
+        single_view = False
+        if ('cap3d_' not in str(sources['id'])) and ('sv3d_' not in str(sources['id'])) and ('zeropp_' not in str(sources['id'])):
+            single_view = True
         if isinstance(i, int):
             sources = [sources]
         assert len(
@@ -710,31 +726,79 @@ class LazySupervisedDataset(Dataset):
         if 'image' in sources[0]:
             image_file = self.list_data_dict[i]['image']
             image_folder = self.data_args.image_folder
-            processor = self.data_args.image_processor
-            image = Image.open(os.path.join(
-                image_folder, image_file)).convert('RGB')
-            if self.data_args.image_aspect_ratio == 'pad':
-                def expand2square(pil_img, background_color):
-                    width, height = pil_img.size
-                    if width == height:
-                        return pil_img
-                    elif width > height:
-                        result = Image.new(
-                            pil_img.mode, (width, width), background_color)
-                        result.paste(pil_img, (0, (width - height) // 2))
-                        return result
-                    else:
-                        result = Image.new(
-                            pil_img.mode, (height, height), background_color)
-                        result.paste(pil_img, ((height - width) // 2, 0))
-                        return result
-                image = expand2square(image, tuple(int(x*255)
-                                      for x in processor.image_mean))
-                image = processor.preprocess(image, return_tensors='pt')[
-                    'pixel_values'][0]
+            if "ocr_vqa" in image_file or "vg" in image_file or "text_vqa" in image_file or "gqa" in image_file:
+                base_dir = 'data/llava/'
             else:
-                image = processor.preprocess(image, return_tensors='pt')[
-                    'pixel_values'][0]
+                base_dir = 'data/sharegpt4v/'
+            processor = self.data_args.image_processor
+            if single_view:
+                image = Image.open(os.path.join(base_dir,
+                    image_folder, image_file)).convert('RGB')
+                if self.data_args.image_aspect_ratio == 'pad':
+                    def expand2square(pil_img, background_color):
+                        width, height = pil_img.size
+                        if width == height:
+                            return pil_img
+                        elif width > height:
+                            result = Image.new(
+                                pil_img.mode, (width, width), background_color)
+                            result.paste(pil_img, (0, (width - height) // 2))
+                            return result
+                        else:
+                            result = Image.new(
+                                pil_img.mode, (height, height), background_color)
+                            result.paste(pil_img, ((height - width) // 2, 0))
+                            return result
+                    image = expand2square(image, tuple(int(x*255)
+                                        for x in processor.image_mean))
+                    image = processor.preprocess(image, return_tensors='pt')[
+                        'pixel_values'][0]
+                else:
+                    image = processor.preprocess(image, return_tensors='pt')[
+                        'pixel_values'][0]
+            else:
+                if 'cap3d_' in str(sources[0]['id']):
+                    images = []
+                    for view_idx in [0, 1, 4, 5]: # MOD no random, 4 norm view only
+                        image = Image.open(os.path.join('data/obj_demo/', # modify this to your own data path
+                            f"Cap3D_imgs_view{view_idx}", image_file + ".jpg")).convert('RGB')
+                        if self.data_args.image_aspect_ratio == 'pad':
+                            def expand2square(pil_img, background_color):
+                                width, height = pil_img.size
+                                if width == height:
+                                    return pil_img
+                                elif width > height:
+                                    result = Image.new(
+                                        pil_img.mode, (width, width), background_color)
+                                    result.paste(pil_img, (0, (width - height) // 2))
+                                    return result
+                                else:
+                                    result = Image.new(
+                                        pil_img.mode, (height, height), background_color)
+                                    result.paste(pil_img, ((height - width) // 2, 0))
+                                    return result
+                            image = expand2square(image, tuple(int(x*255)
+                                                for x in processor.image_mean))
+                            image = processor.preprocess(image, return_tensors='pt')[
+                                'pixel_values'][0]
+                        else:
+                            image = processor.preprocess(image, return_tensors='pt')[
+                                'pixel_values'][0]
+                        images.append(image)
+                elif 'sv3d_' in sources[0]["id"]:
+                    image = Image.open(sources[0]['image'])
+
+                    v1, v2, v3, v4 = image.crop((0, 0, 576, 576)), image.crop((576, 0, 1152, 576)), image.crop((0, 576, 576, 1152)), image.crop((576, 576, 1152, 1152))
+                    # print(processor)
+                    images = [processor.preprocess(img, return_tensors='pt')[
+                                'pixel_values'][0] for img in [v1, v3, v4, v2]] # pay attn to ordr!
+                else:
+                    assert 'zeropp_' in sources[0]["id"]
+                    image = Image.open("/mnt/petrelfs/sunzeyi/generative-models/" + sources[0]['image'])
+                    assert image.size[0] == 640
+                    v1, v2, v3, v4 = image.crop((0, 0, 320, 320)), image.crop((320, 0, 640, 320)), image.crop((0, 320, 320, 640)), image.crop((320, 320, 640, 640))
+                    images = [processor.preprocess(img, return_tensors='pt')[
+                                'pixel_values'][0] for img in [v1, v3, v4, v2]] # pay attn to ordr!
             sources = preprocess_multimodal(
                 copy.deepcopy([e["conversations"] for e in sources]),
                 self.data_args)
@@ -750,7 +814,10 @@ class LazySupervisedDataset(Dataset):
 
         # image exist in the data
         if 'image' in self.list_data_dict[i]:
-            data_dict['image'] = image
+            if single_view:
+                data_dict['image'] = [image] * 4
+            else:
+                data_dict['image'] = images
         elif self.data_args.is_multimodal:
             # image does not exist in the data, but the model is multimodal
             crop_size = self.data_args.image_processor.crop_size
@@ -785,10 +852,11 @@ class DataCollatorForSupervisedDataset(object):
 
         if 'image' in instances[0]:
             images = [instance['image'] for instance in instances]
-            if all(x is not None and x.shape == images[0].shape for x in images):
-                batch['images'] = torch.stack(images)
-            else:
-                batch['images'] = images
+            # if all(x is not None and x.shape == images[0].shape for x in images):
+            #     batch['images'] = torch.stack(images)
+            # else:
+            # directly input images
+            batch['images'] = [torch.stack(x) for x in images]
 
         return batch
 
