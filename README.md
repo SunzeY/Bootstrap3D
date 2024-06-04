@@ -20,7 +20,7 @@
 <!-- [![Hugging Face Spaces(Coming soon)](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/xxx) -->
 
 
-<video src="https://github.com/SunzeY/SunzeY.github.io/blob/main/Bootstrap3D/videos/gaussian.mp4?raw=true" controls="controls">
+<video src="https://github.com/SunzeY/SunzeY.github.io/blob/main/Bootstrap3D/videos/gaussian.mp4" controls="controls">
 </video>
 
 
