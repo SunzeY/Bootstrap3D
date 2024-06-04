@@ -1,6 +1,6 @@
 # <img src="assets/icon.jpg" style="vertical-align: -14px;" :height="40px" width="40px"> Bootstrap3D
 
-**[Bootstrap3D: Improving 3D Content Creation with Synthetic Data](https://arxiv.org/abs/2404.16829)**
+**[Bootstrap3D: Improving 3D Content Creation with Synthetic Data](https://arxiv.org/abs/2406.00093)**
 </br>
 [Zeyi Sun](https://github.com/SunzeY),
 [Tong Wu](https://wutong16.github.io/),
@@ -16,16 +16,12 @@
 <a href="https://sunzey.github.io/Bootstrap3D/"><img src="https://img.shields.io/badge/Project-Website-red"></a>
 </p>
 
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/Zery/Alpha_CLIP_ImgVar)
-
 <!-- Hugging-face Demo `Make-it-Real`: (Coming soon) -->
 <!-- [![Hugging Face Spaces(Coming soon)](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/xxx) -->
 
 
-<!-- <video src="https://github.com/Aleafy/Make_it_Real/blob/main/assets/demo.mp4?raw=true" controls="controls">
-</video> -->
-
-![Demo](./assets/cases.gif)
+<video src="https://github.com/SunzeY/SunzeY.github.io/blob/main/Bootstrap3D/videos/gaussian.mp4?raw=true" controls="controls">
+</video>
 
 
 ## 📜 News
