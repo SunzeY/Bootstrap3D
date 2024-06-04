@@ -12,7 +12,7 @@
 [Jiaqi Wang](https://myownskyw7.github.io/)
 
 <p align="center">
-<a href="https://arxiv.org/abs/2312.03818"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
+<a href="https://arxiv.org/abs/2406.00093"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
 <a href="https://sunzey.github.io/Bootstrap3D/"><img src="https://img.shields.io/badge/Project-Website-red"></a>
 </p>
 
@@ -29,7 +29,7 @@
 
 
 ## 📜 News
-🚀 [2024/5/28] The [paper](https://arxiv.org/abs/xxx) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
+🚀 [2024/5/28] The [paper](https://arxiv.org/abs/2406.00093) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
 
 ## 💡 Highlights
 - 🔥 A new Multi-View Diffusion model trained on high quality synthetic data and capable of generating multi-view images closely follow text prompt.
@@ -53,11 +53,11 @@
 If you find our work helpful for your research, please consider giving a star ⭐ and citation 📝
 
 ```bibtex
-@misc{fang2024makeitreal,
-      title={Make-it-Real: Unleashing Large Multimodal Model's Ability for Painting 3D Objects with Realistic Materials}, 
-      author={Ye Fang and Zeyi Sun and Tong Wu and Jiaqi Wang and Ziwei Liu and Gordon Wetzstein and Dahua Lin},
+@misc{sun2024bootstrap3d,
+      title={Bootstrap3D: Improving 3D Content Creation with Synthetic Data}, 
+      author={Zeyi Sun and Tong Wu and Pan Zhang and Yuhang Zang and Xiaoyi Dong and Yuanjun Xiong and Dahua Lin and Jiaqi Wang},
       year={2024},
-      eprint={2404.16829},
+      eprint={2406.00093},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
