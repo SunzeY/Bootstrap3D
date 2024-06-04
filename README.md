@@ -25,7 +25,7 @@
 
 
 ## 📜 News
-🚀 [2024/5/28] The [paper](https://arxiv.org/abs/2406.00093) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
+🚀 [2024/6/4] The [paper](https://arxiv.org/abs/2406.00093) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
 
 ## 💡 Highlights
 - 🔥 A new Multi-View Diffusion model trained on high quality synthetic data and capable of generating multi-view images closely follow text prompt.
