@@ -1,6 +1,6 @@
 # <img src="assets/icon.jpg" style="vertical-align: -14px;" :height="40px" width="40px"> Bootstrap3D
 
-**[Bootstrap3D: Improving 3D Content Creation with Synthetic Data](https://arxiv.org/abs/2406.00093)**
+**[Bootstrap3D: Improving Multi-view Diffusion Model with Synthetic Data](https://arxiv.org/abs/2406.00093v2)**
 </br>
 [Zeyi Sun](https://github.com/SunzeY),
 [Tong Wu](https://wutong16.github.io/),
@@ -12,7 +12,7 @@
 [Jiaqi Wang](https://myownskyw7.github.io/)
 
 <p align="center">
-<a href="https://arxiv.org/abs/2406.00093"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
+<a href="https://arxiv.org/abs/2406.00093v2"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
 <a href="https://sunzey.github.io/Bootstrap3D/"><img src="https://img.shields.io/badge/Project-Website-red"></a>
 </p>
 
@@ -25,7 +25,7 @@
 
 
 ## 📜 News
-🚀 [2024/6/4] The [paper](https://arxiv.org/abs/2406.00093) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
+🚀 [2024/6/4] The [paper](https://arxiv.org/abs/2406.00093v2) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
 
 ## 💡 Highlights
 - 🔥 A new Multi-View Diffusion model trained on high quality synthetic data and capable of generating multi-view images closely follow text prompt.
@@ -49,12 +49,13 @@
 If you find our work helpful for your research, please consider giving a star ⭐ and citation 📝
 
 ```bibtex
-@misc{sun2024bootstrap3d,
-      title={Bootstrap3D: Improving 3D Content Creation with Synthetic Data}, 
+@misc{sun2024bootstrap3dimprovingmultiviewdiffusion,
+      title={Bootstrap3D: Improving Multi-view Diffusion Model with Synthetic Data}, 
       author={Zeyi Sun and Tong Wu and Pan Zhang and Yuhang Zang and Xiaoyi Dong and Yuanjun Xiong and Dahua Lin and Jiaqi Wang},
       year={2024},
       eprint={2406.00093},
       archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2406.00093}, 
 }
 ```
