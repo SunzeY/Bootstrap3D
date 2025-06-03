@@ -94,68 +94,83 @@ def split_four(image):
                      image.crop((half_size, half_size, full_size, full_size))
     return [v1, v2, v3, v4]
 
-@torch.inference_mode()
+@torch.inference_mode()  # Disable gradient calculation for inference
 def get_response(params):
     prompt = params["prompt"]
+    
+    # Replace single <image> tag with four <image> tokens (if user forgot to provide enough)
     prompt.replace("<image>", "<image><image><image><image>")
-    ori_prompt = prompt
+    ori_prompt = prompt  # Keep original prompt for fallback
+
     images = params.get("images", None)
     num_image_tokens = 0
+
     if images is not None and len(images) > 0:
-        if len(images) > 0:
-            if len(images) != prompt.count(DEFAULT_IMAGE_TOKEN):
-                raise ValueError(
-                    "Number of images does not match number of <image> tokens in prompt")
-            images = [load_image_from_base64(image) for image in images]
-            # split into 4view images
-            images = split_four(images[0])
-            images = process_images(images, image_processor, model.config)
+        # Ensure number of images matches <image> token count
+        if len(images) != prompt.count(DEFAULT_IMAGE_TOKEN):
+            raise ValueError("Number of images does not match number of <image> tokens in prompt")
+        
+        # Decode base64-encoded image and split into 4 subviews
+        images = [load_image_from_base64(image) for image in images]
+        images = split_four(images[0])  # Expecting one multi-view image, split into 4
 
-            if type(images) is list:
-                images = [image.to(model.device, dtype=torch.float16)
-                          for image in images]
-            else:
-                images = images.to(model.device, dtype=torch.float16)
+        # Apply model-specific image pre-processing
+        images = process_images(images, image_processor, model.config)
 
-            replace_token = DEFAULT_IMAGE_TOKEN
-            if getattr(model.config, 'mm_use_im_start_end', False):
-                replace_token = DEFAULT_IM_START_TOKEN + replace_token + DEFAULT_IM_END_TOKEN
-            prompt = prompt.replace(DEFAULT_IMAGE_TOKEN, replace_token)
-
-            num_image_tokens = prompt.count(
-                replace_token) * model.get_vision_tower().num_patches
+        # Move processed image tensors to model device
+        if isinstance(images, list):
+            images = [image.to(model.device, dtype=torch.float16) for image in images]
         else:
-            images = None
+            images = images.to(model.device, dtype=torch.float16)
+
+        # Handle special start/end tokens if model expects them
+        replace_token = DEFAULT_IMAGE_TOKEN
+        if getattr(model.config, 'mm_use_im_start_end', False):
+            replace_token = DEFAULT_IM_START_TOKEN + replace_token + DEFAULT_IM_END_TOKEN
+
+        # Replace all <image> tokens in prompt with actual expected image token format
+        prompt = prompt.replace(DEFAULT_IMAGE_TOKEN, replace_token)
+
+        # Calculate number of image tokens inserted
+        num_image_tokens = prompt.count(replace_token) * model.get_vision_tower().num_patches
+
         image_args = {"images": images}
     else:
         images = None
         image_args = {}
 
+    # Sampling parameters
     temperature = float(params.get("temperature", 1.0))
     top_p = float(params.get("top_p", 1.0))
-    max_context_length = getattr(
-        model.config, 'max_position_embeddings', 2048)
+    max_context_length = getattr(model.config, 'max_position_embeddings', 2048)
     max_new_tokens = min(int(params.get("max_new_tokens", 256)), 1024)
     stop_str = params.get("stop", None)
-    do_sample = True if temperature > 0.001 else False
+    do_sample = temperature > 0.001
 
+    # Tokenize input text with image token support
     input_ids = tokenizer_image_token(
-        prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).to(model.device)
+        prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt'
+    ).unsqueeze(0).to(model.device)
 
+    # Configure stopping condition (keyword-based)
     keywords = [stop_str]
-    stopping_criteria = KeywordsStoppingCriteria(
-        keywords, tokenizer, input_ids)
+    stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
+
+    # Token streaming (for real-time UI updates)
     streamer = TextIteratorStreamer(
-        tokenizer, skip_prompt=True, skip_special_tokens=True, timeout=15)
+        tokenizer, skip_prompt=True, skip_special_tokens=True, timeout=15
+    )
 
-    max_new_tokens = min(max_new_tokens, max_context_length -
-                         input_ids.shape[-1] - num_image_tokens)
-
+    # Ensure output does not exceed max context length
+    max_new_tokens = min(max_new_tokens, max_context_length - input_ids.shape[-1] - num_image_tokens)
     if max_new_tokens < 1:
-        yield json.dumps({"text": ori_prompt + "Exceeds max token length. Please start a new conversation, thanks.", "error_code": 0}).encode() + b"\0"
+        yield json.dumps({
+            "text": ori_prompt + "Exceeds max token length. Please start a new conversation, thanks.",
+            "error_code": 0
+        }).encode() + b"\0"
         return
 
-    # local inference
+    # Run generation in background thread to enable streaming
     thread = Thread(target=model.generate, kwargs=dict(
         inputs=input_ids,
         do_sample=do_sample,
@@ -165,16 +180,18 @@ def get_response(params):
         streamer=streamer,
         stopping_criteria=[stopping_criteria],
         use_cache=True,
-        **image_args
+        **image_args  # Pass preprocessed image tensors if available
     ))
     thread.start()
 
+    # Assemble streamed output in real time
     generated_text = ori_prompt
     for new_text in streamer:
         generated_text += new_text
         if generated_text.endswith(stop_str):
             generated_text = generated_text[:-len(stop_str)]
         yield json.dumps({"text": generated_text, "error_code": 0}).encode()
+
 
 
 def http_bot(state, temperature, top_p, max_new_tokens):
