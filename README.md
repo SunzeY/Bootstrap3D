@@ -23,6 +23,7 @@
 
 ## 📜 
 🚀 [2025/6/23] Bootstrap3D is accepted by ICCV 2025! 
+
 🚀 [2024/6/4] The [paper](https://arxiv.org/abs/2406.00093v2) and [project page](https://sunzey.github.io/Bootstrap3D/) are released!
 
 ## 💡 Highlights
